@@ -12,18 +12,16 @@ import logic.Trains.TrainValidator;
  */
 public class TrainStation {
     public static void main(String[] args){
-        //TODO:
-        //3. c, iii
-        //3. c. v - do walidacji
-        // czy addRestriction nie daloby sie w jednej linii zamiast tworzenia nowych obiektow?
-        // 4. d. i - zbior niespelnionych kryteroiw
         Train train = new Train();
         train.addCar(new Locomotive());
         train.addCar(new CompartmentCar());
-        train.addCar(new CompartmentCar());
         train.addCar(new RestaurantCar());
         train.addCar(new NonCompartmentCar());
+        train.addCar(new CompartmentCar());
         train.addCar(new NonCompartmentCar());
+        System.out.println(train.displayTrain());
+
+        train.swapCars(1,2);
         System.out.println(train.displayTrain());
 
         TrainValidator validator = new TrainValidator();
@@ -35,10 +33,11 @@ public class TrainStation {
 
         TrainValidator validator2 = new TrainValidator();
         validator2.addRestriction("Locomotive", 1, 1);
-        validator2.addRestriction("Compartment Car", 0, 4);
+        validator2.addRestriction("Compartment Car", 3, 4);
         validator2.addRestriction("Non Compartment Car", 0, 1);
         validator2.addRestriction("Restaurant Car", 0, 1);
         System.out.println(validator2.validate(train));
+        System.out.println(validator2.validate1(train));
 
     }
 }

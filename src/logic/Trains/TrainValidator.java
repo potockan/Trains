@@ -1,9 +1,10 @@
 package logic.Trains;
 import logic.Cars.Car;
 import logic.Pairs.Pair;
-
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -15,10 +16,9 @@ public class TrainValidator {
     public void addRestriction(String carType, int minCarNumber, int maxCarNumber){
         // nie jest potrzebna walidacja,
         // czy jakichs ograniczen na ten typ wagonow juz nie mamy?
-        Pair range = new Pair(minCarNumber, maxCarNumber);
         this.trainRestrictions.put(
                 carType,
-                range
+                new Pair(minCarNumber, maxCarNumber)
         );
     }
 
@@ -47,5 +47,21 @@ public class TrainValidator {
         return true;
     }
 
+    public Set<String> validate1(Train train) {
+        Set<String> restrictionViolation = new HashSet<>();
+        Map<String, Integer> trainComposition = this.getTrainComposition(train);
+        for (Map.Entry<String, Integer> entry : trainComposition.entrySet()) {
+            Pair restrictions = this.trainRestrictions.get(entry.getKey());
+            if (restrictions.getMin() > entry.getValue() ||
+                    restrictions.getMax() < entry.getValue()) {
+                restrictionViolation.add("".format(
+                        "%s is %d and should be >= %d and <= %d",
+                        entry.getKey(), entry.getValue(),
+                        restrictions.getMin(), restrictions.getMax()
+                ));
+            }
+        }
+        return restrictionViolation;
+    }
 
 }
