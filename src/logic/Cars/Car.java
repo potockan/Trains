@@ -5,5 +5,5 @@ package logic.Cars;
  */
 public abstract class Car {
     public abstract String displayCar();
-    public abstract String getCarType();
+    public abstract CarType getCarType();
 }

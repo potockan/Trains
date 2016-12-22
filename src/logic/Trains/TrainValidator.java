@@ -1,6 +1,6 @@
 package logic.Trains;
 import logic.Cars.Car;
-import logic.Pairs.Pair;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,14 +11,12 @@ import java.util.Set;
  * Created by npotocka on 15.12.16.
  */
 public class TrainValidator {
-    Map<String, Pair> trainRestrictions = new HashMap<>();
+    Map<String, Restriction> trainRestrictions = new HashMap<>();
 
     public void addRestriction(String carType, int minCarNumber, int maxCarNumber){
-        // nie jest potrzebna walidacja,
-        // czy jakichs ograniczen na ten typ wagonow juz nie mamy?
         this.trainRestrictions.put(
                 carType,
-                new Pair(minCarNumber, maxCarNumber)
+                new Restriction<Integer>(minCarNumber, maxCarNumber)
         );
     }
 
@@ -26,7 +24,7 @@ public class TrainValidator {
         Car[] trainTable = train.getTrainOrder();
         Map<String, Integer> trainComposition = new HashMap<>();
         for(int i = 0; i < trainTable.length; i++){
-            String carType = trainTable[i].getCarType();
+            String carType = trainTable[i].getCarType().toString();
             trainComposition.put(
                     carType,
                     trainComposition.getOrDefault(carType, 0) + 1
@@ -39,7 +37,7 @@ public class TrainValidator {
     public boolean validate(Train train){
         Map<String, Integer> trainComposition = this.getTrainComposition(train);
         for(Map.Entry<String, Integer> entry : trainComposition.entrySet()){
-            Pair restrictions = this.trainRestrictions.get(entry.getKey());
+            Restriction<Integer> restrictions = this.trainRestrictions.get(entry.getKey());
             if(restrictions.getMin() > entry.getValue() ||
                     restrictions.getMax() < entry.getValue())
                 return false;
@@ -51,7 +49,7 @@ public class TrainValidator {
         Set<String> restrictionViolation = new HashSet<>();
         Map<String, Integer> trainComposition = this.getTrainComposition(train);
         for (Map.Entry<String, Integer> entry : trainComposition.entrySet()) {
-            Pair restrictions = this.trainRestrictions.get(entry.getKey());
+            Restriction<Integer> restrictions = this.trainRestrictions.get(entry.getKey());
             if (restrictions.getMin() > entry.getValue() ||
                     restrictions.getMax() < entry.getValue()) {
                 restrictionViolation.add("".format(

@@ -12,7 +12,7 @@ public class CompartmentCar extends PassengerCar {
     }
 
     @Override
-    public String getCarType() {
-        return this.carType;
+    public CarType getCarType() {
+        return CarType.COMPARTMENT_CAR;
     }
 }

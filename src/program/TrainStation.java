@@ -1,9 +1,6 @@
 package program;
 
-import logic.Cars.CompartmentCar;
-import logic.Cars.Locomotive;
-import logic.Cars.NonCompartmentCar;
-import logic.Cars.RestaurantCar;
+import logic.Cars.*;
 import logic.Trains.Train;
 import logic.Trains.TrainValidator;
 
@@ -38,6 +35,7 @@ public class TrainStation {
         validator2.addRestriction("Restaurant Car", 0, 1);
         System.out.println(validator2.validate(train));
         System.out.println(validator2.validate1(train));
+
 
     }
 }
